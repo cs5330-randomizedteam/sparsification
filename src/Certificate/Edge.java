@@ -8,8 +8,8 @@ public class Edge implements Comparable<Edge> {
     public int des;
 
     public Edge(int src, int des) {
-        this.src = src;
-        this.des = des;
+        this.src = src < des? src : des;
+        this.des = src >= des? src : des;
     }
 
     @Override
@@ -19,10 +19,9 @@ public class Edge implements Comparable<Edge> {
 
     @Override
     public int compareTo(Edge o) {
-        if ((this.src == o.src && this.des == o.des)
-                || (this.src == o.des && this.des == o.src)) {
-            return 0;
+        if (this.src == o.src) {
+            return this.des - o.des;
         }
-        return -1;
+        return this.src - o.src;
     }
 }

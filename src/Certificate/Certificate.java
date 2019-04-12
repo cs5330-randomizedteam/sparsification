@@ -3,51 +3,108 @@ package Certificate;
 import java.util.*;
 import java.io.*;
 
+import util.Const;
+
 public class Certificate {
 
     private ArrayList<ArrayList<Edge>> E = new ArrayList<>();
+    private ArrayList<Set<Integer>> adjacentList = new ArrayList<>();
+    private Set<Edge> edgeList = new TreeSet<Edge>();
+    private UFDS uf;
+
+    public Certificate(String dataFileName) throws FileNotFoundException {
+        Scanner in = new Scanner(new BufferedReader(new FileReader(Const.OUTPUT_DIR + dataFileName)));
+        int N = in.nextInt();
+        uf = new UFDS(N);
+        for (int i = 0; i < N; i++) {
+            int M = in.nextInt();
+            adjacentList.add(new HashSet<>());
+            for(int j = 0; j < M; j++) {
+                int nbr = in.nextInt();
+                adjacentList.get(i).add(nbr);
+                if (i < nbr) {
+                    edgeList.add(new Edge(i, nbr));
+                }
+            }
+        }
+    }
+
+    public Certificate() {}
+
+    public Set<Edge> generateCert(int k) {
+        while (edgeList.size() > k * (uf.size() - 1)) {
+            clear();
+            solve(this.adjacentList);
+//            System.out.println("=====Edge List========");
+//            edgeList.forEach(ct -> {
+//                System.out.printf("%d, %d\n", ct.src, ct.des);
+//            });
+//            System.out.println("======Certificate=======");
+            Set<Edge> cert = query(k);
+//            cert.forEach(ct -> {
+//                System.out.printf("%d, %d\n", ct.src, ct.des);
+//            });
+//            System.out.println("======UFDS=======");
+
+            edgeList.removeAll(cert);
+
+//            edgeList.forEach(ct -> {
+//                System.out.printf("%d, %d\n", ct.src, ct.des);
+//            });
+
+            for (Edge e : edgeList) {
+                uf.union(e.src, e.des);
+            }
+
+//            for(int i = 0; i < 7; i++) {
+//                System.out.print(uf.find(i));
+//            }
+//            System.out.println();
+//            System.out.println("=============");
+
+            edgeList = cert;
+        }
+        return edgeList;
+    }
 
     /**
      * For undirected graph, need (src, des) and (des, src) both in adjList.
      */
-    public void solve(ArrayList<ArrayList<Integer>> adjList) {
-        int M = 0;
-        for (ArrayList<Integer> nbrs: adjList) {
-            M += nbrs.size();
-        }
-        M /= 2;
-        System.out.println(M);
+    public void solve(ArrayList<Set<Integer>> adjList) {
+        int M = edgeList.size();
+        System.out.println("Number of edge:" + M);
         for (int i = 0; i <= M; i++) {
             E.add(new ArrayList<>());
         }
-
-        int N = adjList.size();
-        int[] r = new int[N];
+        int[] r = new int[adjList.size()];
         HashMap<Integer, Integer> visited = new HashMap<>();
-        for (int i = 0; i < N; i++) {
-            for (int j = 0; j < adjList.get(i).size(); j++) {
-                visited.put(new Edge(i, adjList.get(i).get(j)).hashCode(), 0);
-            }
-        }
 
         TreeSet<Node> pq = new TreeSet<Node>();
-        for (int i = 0; i < N; i++) {
+        for (int i = 0; i < adjList.size(); i++) {
             pq.add(new Node(i));
         }
+        System.out.println("pq size: " + pq.size());
         while (!pq.isEmpty()) {
             Node nodex = pq.pollLast();
             int x = nodex.node;
-            ArrayList<Integer> nbrs = adjList.get(x);
+            Set<Integer> nbrs = adjList.get(x);
             for (int y: nbrs) {
-                if (y == x || visited.get(new Edge(x, y).hashCode()) == 1) {
+                int rootx = uf.find(x);
+                int rooty = uf.find(y);
+                if (rootx == rooty || visited.containsKey(new Edge(x, y).hashCode())) {
                     continue;
                 }
-
-                E.get(r[y] + 1).add(new Edge(x, y));
-                if (r[x] == r[y]) r[x]++;
-                pq.remove(new Node(y, r[y]));
-                r[y]++;
-                pq.add(new Node(y, r[y]));
+                E.get(r[rooty] + 1).add(new Edge(x, y));
+                if (r[x] == r[rooty]) r[x]++;
+//                pq.remove(new Node(rooty, r[rooty]));
+                for (int i = 0; i < adjList.size(); i++) {
+                    if (uf.find(i) == rooty) {
+                        pq.remove(new Node(i, r[i]));
+                        r[i]++;
+                        pq.add(new Node(i, r[i]));
+                    }
+                }
+//                pq.add(new Node(rooty, r[rooty]));
                 visited.put(new Edge(x, y).hashCode(), 1);
                 visited.put(new Edge(y, x).hashCode(), 1);
             }

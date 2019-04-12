@@ -17,6 +17,9 @@ public class Node implements Comparable<Node> {
 
     @Override
     public int compareTo(Node o) {
+        if (this.rValue == o.rValue) {
+            return this.node - o.node;
+        }
         return this.rValue - o.rValue;
     }
 

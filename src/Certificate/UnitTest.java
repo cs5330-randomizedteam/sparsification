@@ -4,11 +4,20 @@ import java.util.*;
 
 public class UnitTest {
 
-    public static void main(String[] args) {
+    public static void main(String[] args) throws Exception {
 //        testRemoveNode();
 //        testHashEdge();
 //        testUnionEdge();
-        testActualGraph();
+//        testActualGraph();
+        testGraphFromFile();
+    }
+
+    public static void testGraphFromFile() throws Exception {
+        Certificate c = new Certificate("sample");
+        Set<Edge> cert = c.generateCert(1);
+        cert.forEach(ct -> {
+            System.out.printf("%d, %d\n", ct.src, ct.des);
+        });
     }
 
     public static void testActualGraph() {
@@ -36,7 +45,7 @@ public class UnitTest {
         }
 
         Certificate c = new Certificate();
-        c.solve(adjList);
+        //c.solve(adjList);
         Set<Edge> cert = c.query(3);
         System.out.println(cert.size());
         cert.forEach(ct -> {

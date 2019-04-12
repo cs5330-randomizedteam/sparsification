@@ -10,7 +10,7 @@ import java.util.Random;
 public class randomGenerator {
 
     public static void main(String[] args) throws IOException {
-        new randomGenerator().generate(5, 10, "sample");
+        new randomGenerator().generate(7, 12, "sample");
     }
 
 
