@@ -2,7 +2,7 @@ package Certificate;
 
 import java.util.Objects;
 
-public class Edge {
+public class Edge implements Comparable<Edge> {
 
     public int src;
     public int des;
@@ -15,5 +15,14 @@ public class Edge {
     @Override
     public int hashCode() {
         return Objects.hash(src, des);
+    }
+
+    @Override
+    public int compareTo(Edge o) {
+        if ((this.src == o.src && this.des == o.des)
+                || (this.src == o.des && this.des == o.src)) {
+            return 0;
+        }
+        return -1;
     }
 }
