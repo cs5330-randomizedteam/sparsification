@@ -33,6 +33,7 @@ public class Certificate {
 
     public Set<Edge> generateCert(int k) {
         while (edgeList.size() > k * (uf.size() - 1)) {
+            System.out.println("number of node: "+uf.size());
             clear();
             solve(this.adjacentList);
 //            System.out.println("=====Edge List========");
@@ -77,13 +78,12 @@ public class Certificate {
             E.add(new ArrayList<>());
         }
         int[] r = new int[adjList.size()];
-        HashMap<Integer, Integer> visited = new HashMap<>();
+        HashMap<Edge, Integer> visited = new HashMap<>();
 
         TreeSet<Node> pq = new TreeSet<Node>();
         for (int i = 0; i < adjList.size(); i++) {
             pq.add(new Node(i));
         }
-        System.out.println("pq size: " + pq.size());
         while (!pq.isEmpty()) {
             Node nodex = pq.pollLast();
             int x = nodex.node;
@@ -91,7 +91,7 @@ public class Certificate {
             for (int y: nbrs) {
                 int rootx = uf.find(x);
                 int rooty = uf.find(y);
-                if (rootx == rooty || visited.containsKey(new Edge(x, y).hashCode())) {
+                if (rootx == rooty || visited.containsKey(new Edge(x, y))) {
                     continue;
                 }
                 E.get(r[rooty] + 1).add(new Edge(x, y));
@@ -105,8 +105,8 @@ public class Certificate {
                     }
                 }
 //                pq.add(new Node(rooty, r[rooty]));
-                visited.put(new Edge(x, y).hashCode(), 1);
-                visited.put(new Edge(y, x).hashCode(), 1);
+                visited.put(new Edge(x, y), 1);
+//                visited.put(new Edge(y, x).hashCode(), 1);
             }
         }
     }

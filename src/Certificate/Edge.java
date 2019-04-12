@@ -18,6 +18,12 @@ public class Edge implements Comparable<Edge> {
     }
 
     @Override
+    public boolean equals(Object o) {
+        Edge other = (Edge) o;
+        return this.src == other.src && this.des == other.des;
+    }
+
+    @Override
     public int compareTo(Edge o) {
         if (this.src == o.src) {
             return this.des - o.des;
