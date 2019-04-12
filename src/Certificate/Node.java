@@ -5,9 +5,9 @@ public class Node implements Comparable<Node> {
     public int node;
     public int rValue;
 
-    public Node(int node, int rValue) {
+    public Node(int node) {
         this.node = node;
-        this.rValue = rValue;
+        this.rValue = 0;
     }
 
     @Override
