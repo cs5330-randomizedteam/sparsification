@@ -10,7 +10,7 @@ import java.util.Random;
 public class randomGenerator {
 
     public static void main(String[] args) throws IOException {
-        new randomGenerator().generate(5, 10, "sample");
+        new randomGenerator().generate(1000, 10000, "sample");
     }
 
 
@@ -45,18 +45,18 @@ public class randomGenerator {
                 if (!graph.get(first).contains(second)) {
                     graph.get(first).add(second);
                     graph.get(second).add(first);
+                    count++;
                 }
-                count++;
             }
         }
 
-        for (int i = 0; i < size; i++) {
-            System.out.print(i + ":");
-            for (int j = 0; j < graph.get(i).size(); j++) {
-                System.out.print(graph.get(i).get(j) + " ");
-            }
-            System.out.println();
-        }
+//        for (int i = 0; i < size; i++) {
+//            System.out.print(i + ":");
+//            for (int j = 0; j < graph.get(i).size(); j++) {
+//                System.out.print(graph.get(i).get(j) + " ");
+//            }
+//            System.out.println();
+//        }
 
         FileOutputStream outputStream = new FileOutputStream(Const.OUTPUT_DIR + outputFile);
         outputStream.write(String.valueOf(size).getBytes());
