@@ -8,7 +8,7 @@ public class MinCutSolver {
 
     public static void main(String[] args) throws FileNotFoundException {
         MinCutSolver solver = new MinCutSolver("sample");
-        System.out.println("Min cut is " + solver.solve(0,2));
+        System.out.println("Min cut is " + solver.solve(1, 2));
 
     }
 
