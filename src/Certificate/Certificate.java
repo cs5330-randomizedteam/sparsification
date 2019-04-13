@@ -32,7 +32,7 @@ public class Certificate {
     public Certificate() {}
 
     public Set<Edge> generateCert(int k) {
-        while (edgeList.size() > k * (uf.size() - 1)) {
+        while (uf.size() > 1 && edgeList.size() > k * (uf.size() - 1)) {
             System.out.println("number of node: "+uf.size());
             clear();
             solve(this.adjacentList);
