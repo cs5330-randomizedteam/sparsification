@@ -29,6 +29,18 @@ public class Certificate {
         }
     }
 
+    public Certificate(ArrayList<HashSet<Integer>> nbrList) {
+        uf = new UFDS(nbrList.size());
+        for (int i = 0; i < nbrList.size(); i++) {
+            adjacentList.add(nbrList.get(i));
+            for (int nbr: nbrList.get(i)) {
+                if (i < nbr) {
+                    edgeList.add(new Edge(i, nbr));
+                }
+            }
+        }
+    }
+
     public Certificate() {}
 
     public Set<Edge> generateCert(int k) {
