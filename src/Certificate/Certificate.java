@@ -86,9 +86,6 @@ public class Certificate {
     public void solve(ArrayList<HashSet<Integer>> adjList) {
         int M = edgeList.size();
         System.out.println("Number of edge:" + M);
-        for (int i = 0; i <= M; i++) {
-            E.add(new ArrayList<>());
-        }
         int[] r = new int[adjList.size()];
         HashMap<Edge, Integer> visited = new HashMap<>();
 
@@ -105,6 +102,12 @@ public class Certificate {
                 int rooty = uf.find(y);
                 if (rootx == rooty || visited.containsKey(new Edge(x, y))) {
                     continue;
+                }
+
+                if (r[rooty] + 1 >= E.size()) {
+                    for (int a = E.size(); a <= r[rooty] + 1; a++) {
+                        E.add(new ArrayList<>());
+                    }
                 }
                 E.get(r[rooty] + 1).add(new Edge(x, y));
                 if (r[x] == r[rooty]) r[x]++;
@@ -124,8 +127,9 @@ public class Certificate {
     }
 
     public Set<Edge> query(int k) {
+        int mink = Math.min(k, E.size() - 1);
         TreeSet<Edge> ans = new TreeSet<Edge>();
-        for (int i = 1; i <= k; i++) {
+        for (int i = 1; i <= mink; i++) {
             ans.addAll(E.get(i));
         }
         return ans;
