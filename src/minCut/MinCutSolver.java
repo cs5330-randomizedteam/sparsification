@@ -12,14 +12,19 @@ public class MinCutSolver {
 
     public static void main(String[] args) throws IOException {
 //      recursive version, stack overflow when graph gets big
-
 //        MinCutSolver solver = new MinCutSolver("sample1");
 //        System.out.println("Min cut is " + solver.solve(3, 5));
 
 //        MinCutSolver solverIterative = new MinCutSolver("sample1");
 //        System.out.println("Min cut is " + solverIterative.IterativeSolve(3, 87999));
 
-        verifier();
+        MinCutSolver solver = new MinCutSolver("starClique1");
+
+        System.out.println("Min cut is " + solver.IterativeSolve(122, 157));
+//        System.out.println("Min cut is " + solver.solve(2, 4));
+
+
+
 
     }
 
@@ -34,6 +39,7 @@ public class MinCutSolver {
         this.graph.resetGraph();
         int improvement = findResidual(source, dest, new HashMap<>());
         while (improvement != Integer.MAX_VALUE) {
+            printGraph();
             improvement = findResidual(source, dest, new HashMap<>());
         }
 
@@ -51,6 +57,7 @@ public class MinCutSolver {
     }
 
     private void printGraph() {
+        System.out.println("##PRINT GRAPH##");
         for (int i = 0; i < graph.getNodes().size(); i++) {
             System.out.print(i + ": ");
             for (int j = 0; j < graph.getNodes().get(i).getAdjList().size(); j++) {

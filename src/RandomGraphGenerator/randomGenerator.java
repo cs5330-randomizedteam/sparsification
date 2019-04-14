@@ -10,7 +10,18 @@ import java.util.Random;
 public class randomGenerator {
 
     public static void main(String[] args) throws IOException {
-        new randomGenerator().generate(1000, 10000, "sample");
+//        new randomGenerator().generate(1000, 20000, "sample1");
+        new randomGenerator().generateStarClique(5,  1000, "starClique1");
+    }
+
+    public void printGraph(ArrayList<ArrayList<Integer>> graph) {
+        for (int i = 0; i < graph.size(); i++) {
+            System.out.print(i + ":");
+            for (int j = 0; j < graph.get(i).size(); j++) {
+                System.out.print(graph.get(i).get(j) + " ");
+            }
+            System.out.println();
+        }
     }
 
 
@@ -50,22 +61,46 @@ public class randomGenerator {
             }
         }
 
-//        for (int i = 0; i < size; i++) {
-//            System.out.print(i + ":");
-//            for (int j = 0; j < graph.get(i).size(); j++) {
-//                System.out.print(graph.get(i).get(j) + " ");
-//            }
-//            System.out.println();
-//        }
+        writeToFile(outputFile, graph);
+    }
 
+    private void writeToFile(String outputFile, ArrayList<ArrayList<Integer>> graph) throws IOException {
         FileOutputStream outputStream = new FileOutputStream(Const.OUTPUT_DIR + outputFile);
-        outputStream.write(String.valueOf(size).getBytes());
-        for (int i = 0; i < size; i++) {
+        outputStream.write(String.valueOf(graph.size()).getBytes());
+        for (int i = 0; i < graph.size(); i++) {
             StringBuilder line = new StringBuilder(" " + graph.get(i).size());
             for (int j = 0; j < graph.get(i).size(); j++) {
                 line.append(" ").append(graph.get(i).get(j));
             }
             outputStream.write(line.toString().getBytes());
         }
+        outputStream.flush();
+        outputStream.close();
+    }
+
+    public void generateStarClique(int numClique, int cliqueSize, String outputFile) throws IOException {
+        ArrayList<ArrayList<Integer>> graph = new ArrayList<>();
+
+        for (int i = 0; i < numClique * cliqueSize + 1; i++) {
+            graph.add(new ArrayList<>());
+        }
+
+        int curNode = 1;
+
+        for (int i = 0; i < numClique; i++) {
+            graph.get(0).add(curNode);
+            graph.get(curNode).add(0);
+            int cliqueNodeEnd = curNode + cliqueSize;
+            for (int j = curNode; j < cliqueNodeEnd; j++) {
+                for (int k = curNode; k < cliqueNodeEnd; k++) {
+                    if (k != j) {
+                        graph.get(j).add(k);
+                    }
+                }
+            }
+            curNode = cliqueNodeEnd;
+        }
+
+        writeToFile(outputFile, graph);
     }
 }
