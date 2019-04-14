@@ -43,14 +43,6 @@ public class UnitTest {
                 adjList.get(i).add(a[i][j]);
             }
         }
-
-        Certificate c = new Certificate();
-        //c.solve(adjList);
-        Set<Edge> cert = c.query(3);
-        System.out.println(cert.size());
-        cert.forEach(ct -> {
-            System.out.printf("%d, %d\n", ct.src, ct.des);
-        });
     }
 
     public static void testUnionEdge() {

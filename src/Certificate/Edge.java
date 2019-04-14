@@ -1,8 +1,9 @@
 package Certificate;
 
+import java.io.Serializable;
 import java.util.Objects;
 
-public class Edge implements Comparable<Edge> {
+public class Edge implements Comparable<Edge>, Serializable {
 
     public int src;
     public int des;
@@ -29,5 +30,10 @@ public class Edge implements Comparable<Edge> {
             return this.des - o.des;
         }
         return this.src - o.src;
+    }
+
+    @Override
+    public String toString() {
+        return String.format("%d %d", src, des);
     }
 }

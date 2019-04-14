@@ -26,11 +26,14 @@ public class Estimate {
             }
             adjacentList.add(nbrs);
         }
+        in.close();
+        System.out.println("finish loading");
+
         nEdges /= 2;
         HashMap<Edge, Integer> edges = new HashMap<>();
         for (int i = 2; i <= nEdges; i *= 2) {
             if (edges.size() >= nEdges) break;
-            Set<Edge> cert = new Certificate(adjacentList).generateCert(i);
+            Set<Edge> cert = new NewCertificate(adjacentList).generateCert(i);
             for (Edge ct: cert) {
                 if (!edges.containsKey(ct)) {
                     edges.put(ct, i / 2);
