@@ -26,7 +26,23 @@ public class Graph {
         }
     }
 
+    public Graph(Graph toCopy) {
+        nodes = new ArrayList<>();
+
+        for (int i = 0; i < toCopy.getNodes().size(); i++) {
+            int numNeighbours = toCopy.nodes.get(i).getAdjList().size();
+            Node node = new Node(i, numNeighbours, toCopy.getNodes().get(i).getAdjList());
+            nodes.add(node);
+        }
+    }
+
     public ArrayList<Node> getNodes() {
         return nodes;
+    }
+
+    public void resetGraph() {
+        for (int i = 0; i < nodes.size(); i++) {
+            nodes.get(i).resetWeights();
+        }
     }
 }

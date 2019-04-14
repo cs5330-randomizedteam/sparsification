@@ -11,13 +11,15 @@ import java.util.Stack;
 public class MinCutSolver {
 
     public static void main(String[] args) throws IOException {
+//      recursive version, stack overflow when graph gets big
 
-        // recursive version
-//        MinCutSolver solver = new MinCutSolver("sample");
+//        MinCutSolver solver = new MinCutSolver("sample1");
 //        System.out.println("Min cut is " + solver.solve(3, 5));
 
-        MinCutSolver solverIterative = new MinCutSolver("sample");
-        System.out.println("Min cut is " + solverIterative.IterativeSolve(3, 5));
+//        MinCutSolver solverIterative = new MinCutSolver("sample1");
+//        System.out.println("Min cut is " + solverIterative.IterativeSolve(3, 87999));
+
+        verifier();
 
     }
 
@@ -29,6 +31,7 @@ public class MinCutSolver {
 
 
     public int solve(int source, int dest) {
+        this.graph.resetGraph();
         int improvement = findResidual(source, dest, new HashMap<>());
         while (improvement != Integer.MAX_VALUE) {
             improvement = findResidual(source, dest, new HashMap<>());
@@ -57,26 +60,29 @@ public class MinCutSolver {
         }
     }
 
-    private void verifier() throws IOException {
-        int size = 200;
-        new randomGenerator().generate(size, 10000, "sample");
-        System.out.println();
-        for (int i = 0; i < size; i+=7) {
-            for (int j = 0; j < size; j+=3) {
-                if (i != j) {
-                    MinCutSolver solver = new MinCutSolver("sample");
-                    MinCutSolver solverIterative = new MinCutSolver("sample");
-                    if (solver.solve(i, j) != solverIterative.IterativeSolve(i, j)) {
-                        System.out.println("FAILED..." + i + "," + j);
-                        return;
-                    }
+    private static void verifier() throws IOException {
+        int size = 2000;
+        new randomGenerator().generate(size, 100000, "sample");
+
+        long startTime = System.nanoTime();
+        MinCutSolver solverIterative = new MinCutSolver("sample");
+        ArrayList<Node> nodes = solverIterative.graph.getNodes();
+        for (int i = 0; i < nodes.size(); i++) {
+            for (int j = 0; j < nodes.get(i).getAdjList().size(); j++) {
+                if (i < nodes.get(i).getAdjList().get(j)) {
+                    solverIterative.IterativeSolve(i, nodes.get(i).getAdjList().get(j));
                 }
             }
         }
-        System.out.println("PASSED");
+
+        long endTime = System.nanoTime();
+        System.out.println("Version 1: " + "Execution time in milliseconds : " +
+                (endTime - startTime) / 1000000000);
+
     }
 
     public int IterativeSolve(int source, int dest) {
+        this.graph.resetGraph();
         int improvement = findResidualIterative(source, dest, new HashMap<>());
         while (improvement != Integer.MAX_VALUE) {
             improvement = findResidualIterative(source, dest, new HashMap<>());
