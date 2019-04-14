@@ -11,8 +11,13 @@ import java.util.Scanner;
 public class Graph {
     private ArrayList<Node> nodes;
 
-    public Graph(String dataFileName) throws FileNotFoundException {
-        Scanner in = new Scanner(new BufferedReader(new FileReader(Const.OUTPUT_DIR + dataFileName)));
+    public Graph(String dataFileName, boolean isWeighted) throws FileNotFoundException {
+        Scanner in;
+        if (isWeighted) {
+            in = new Scanner(new BufferedReader(new FileReader(Const.SAMPLED_DIR + dataFileName)));
+        } else {
+            in = new Scanner(new BufferedReader(new FileReader(Const.OUTPUT_DIR + dataFileName)));
+        }
         nodes = new ArrayList<>();
 
         int size = in.nextInt();
@@ -21,17 +26,23 @@ public class Graph {
             Node node = new Node(i, numNeighbours);
             for (int j = 0; j < numNeighbours; j++) {
                 node.getAdjList().add(in.nextInt());
+                if (isWeighted) {
+                    int weight = in.nextInt();
+                    node.getWeights().set(j, weight);
+                    node.getCapacity().set(j, weight);
+                }
             }
             nodes.add(node);
         }
+        System.out.println("FINISHED LOADING");
     }
 
-    public Graph(Graph toCopy) {
+    public Graph(ArrayList<ArrayList<Integer>> adjLst, ArrayList<ArrayList<Integer>> weights) {
         nodes = new ArrayList<>();
 
-        for (int i = 0; i < toCopy.getNodes().size(); i++) {
-            int numNeighbours = toCopy.nodes.get(i).getAdjList().size();
-            Node node = new Node(i, numNeighbours, toCopy.getNodes().get(i).getAdjList());
+        for (int i = 0; i < adjLst.size(); i++) {
+            int numNeighbours = adjLst.get(i).size();
+            Node node = new Node(i, numNeighbours, adjLst.get(i), weights.get(i));
             nodes.add(node);
         }
     }

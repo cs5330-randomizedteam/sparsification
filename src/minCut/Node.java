@@ -1,5 +1,6 @@
 package minCut;
 
+
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -14,20 +15,28 @@ public class Node {
         // constructor for unweighted graph
         this.nodeId = id;
         this.adjList = new ArrayList<>();
-        this.weights = new ArrayList<Integer>(Collections.nCopies(numNeighbours, 1));
-        this.capacity =  new ArrayList<Integer>(Collections.nCopies(numNeighbours, 1));
+        this.weights = new ArrayList<>(Collections.nCopies(numNeighbours, 1));
+        this.capacity =  new ArrayList<>(Collections.nCopies(numNeighbours, 1));
     }
 
     public Node(int id, int numNeighbours, List<Integer> adjList) {
         // constructor for unweighted graph
         this.nodeId = id;
         this.adjList = new ArrayList<>(adjList);
-        this.weights = new ArrayList<Integer>(Collections.nCopies(numNeighbours, 1));
-        this.capacity =  new ArrayList<Integer>(Collections.nCopies(numNeighbours, 1));
+        this.weights = new ArrayList<>(Collections.nCopies(numNeighbours, 1));
+        this.capacity =  new ArrayList<>(Collections.nCopies(numNeighbours, 1));
+    }
+
+    public Node(int id, int numNeighbours, List<Integer> adjList, List<Integer> weights) {
+        // constructor for unweighted graph
+        this.nodeId = id;
+        this.adjList = new ArrayList<>(adjList);
+        this.weights = new ArrayList<>(weights);
+        this.capacity =  new ArrayList<>(weights);
     }
 
     public void resetWeights() {
-        this.weights = new ArrayList<Integer>(Collections.nCopies(this.weights.size(), 1));
+        this.weights = new ArrayList<Integer>(this.capacity);
     }
 
     public int getNodeId() {

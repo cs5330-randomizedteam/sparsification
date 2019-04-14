@@ -11,27 +11,18 @@ import java.util.Stack;
 public class MinCutSolver {
 
     public static void main(String[] args) throws IOException {
-//      recursive version, stack overflow when graph gets big
-//        MinCutSolver solver = new MinCutSolver("sample1");
-//        System.out.println("Min cut is " + solver.solve(3, 5));
-
-//        MinCutSolver solverIterative = new MinCutSolver("sample1");
-//        System.out.println("Min cut is " + solverIterative.IterativeSolve(3, 87999));
-
-        MinCutSolver solver = new MinCutSolver("starClique1");
-
-        System.out.println("Min cut is " + solver.IterativeSolve(122, 157));
-//        System.out.println("Min cut is " + solver.solve(2, 4));
-
-
-
-
+        MinCutSolver solver = new MinCutSolver("sample", true);
+        System.out.println("Min cut is " + solver.IterativeSolve(11000,  17666));
     }
 
     private Graph graph;
 
-    public MinCutSolver(String graphFile) throws FileNotFoundException {
-        this.graph = new Graph(graphFile);
+    public MinCutSolver(String graphFile, boolean isWeighted) throws FileNotFoundException {
+        this.graph = new Graph(graphFile, isWeighted);
+    }
+
+    public MinCutSolver(ArrayList<ArrayList<Integer>> adjLst, ArrayList<ArrayList<Integer>> weights) {
+        this.graph = new Graph(adjLst, weights);
     }
 
 
@@ -72,7 +63,7 @@ public class MinCutSolver {
         new randomGenerator().generate(size, 100000, "sample");
 
         long startTime = System.nanoTime();
-        MinCutSolver solverIterative = new MinCutSolver("sample");
+        MinCutSolver solverIterative = new MinCutSolver("sample", false);
         ArrayList<Node> nodes = solverIterative.graph.getNodes();
         for (int i = 0; i < nodes.size(); i++) {
             for (int j = 0; j < nodes.get(i).getAdjList().size(); j++) {
@@ -90,8 +81,11 @@ public class MinCutSolver {
 
     public int IterativeSolve(int source, int dest) {
         this.graph.resetGraph();
+        int total = 0;
         int improvement = findResidualIterative(source, dest, new HashMap<>());
         while (improvement != Integer.MAX_VALUE) {
+            total += improvement;
+            System.out.println("Now is " + total);
             improvement = findResidualIterative(source, dest, new HashMap<>());
         }
 
