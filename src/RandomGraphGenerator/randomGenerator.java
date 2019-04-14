@@ -11,7 +11,7 @@ public class randomGenerator {
 
     public static void main(String[] args) throws IOException {
 //        new randomGenerator().generate(1000, 20000, "sample1");
-        new randomGenerator().generateStarClique(10,  1000, "starClique1");
+        new randomGenerator().generateStarClique(20,  3000, "starClique1");
     }
 
     public void printGraph(ArrayList<ArrayList<Integer>> graph) {
@@ -78,29 +78,36 @@ public class randomGenerator {
         outputStream.close();
     }
 
-    public void generateStarClique(int numClique, int cliqueSize, String outputFile) throws IOException {
-        ArrayList<ArrayList<Integer>> graph = new ArrayList<>();
 
-        for (int i = 0; i < numClique * cliqueSize + 1; i++) {
-            graph.add(new ArrayList<>());
+    public void generateStarClique(int numClique, int cliqueSize, String outputFile) throws IOException {
+        FileOutputStream outputStream = new FileOutputStream(Const.OUTPUT_DIR + outputFile);
+        outputStream.write(String.valueOf(numClique * cliqueSize + 1).getBytes());
+
+        StringBuilder line = new StringBuilder(" " + numClique);
+        for (int i = 0; i < numClique; i++) {
+            line.append(" ").append(1 + i * cliqueSize);
         }
+        outputStream.write(line.toString().getBytes());
 
         int curNode = 1;
-
         for (int i = 0; i < numClique; i++) {
-            graph.get(0).add(curNode);
-            graph.get(curNode).add(0);
+            System.out.println("##Clique " + i + ":");
             int cliqueNodeEnd = curNode + cliqueSize;
             for (int j = curNode; j < cliqueNodeEnd; j++) {
+                if (j == curNode) {
+                    line = new StringBuilder(" " + cliqueSize);
+                    line.append(" ").append(0);
+                } else {
+                    line = new StringBuilder(" " + (cliqueSize - 1));
+                }
                 for (int k = curNode; k < cliqueNodeEnd; k++) {
                     if (k != j) {
-                        graph.get(j).add(k);
+                        line.append(" ").append(k);
                     }
                 }
+                outputStream.write(line.toString().getBytes());
             }
             curNode = cliqueNodeEnd;
         }
-
-        writeToFile(outputFile, graph);
     }
 }
