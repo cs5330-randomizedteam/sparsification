@@ -8,7 +8,7 @@ import util.Const;
 public class Certificate {
 
     private ArrayList<ArrayList<Edge>> E = new ArrayList<>();
-    private ArrayList<Set<Integer>> adjacentList = new ArrayList<>();
+    private ArrayList<HashSet<Integer>> adjacentList = new ArrayList<>();
     private Set<Edge> edgeList = new TreeSet<Edge>();
     private UFDS uf;
 
@@ -31,8 +31,8 @@ public class Certificate {
 
     public Certificate(ArrayList<HashSet<Integer>> nbrList) {
         uf = new UFDS(nbrList.size());
+        adjacentList = nbrList;
         for (int i = 0; i < nbrList.size(); i++) {
-            adjacentList.add(nbrList.get(i));
             for (int nbr: nbrList.get(i)) {
                 if (i < nbr) {
                     edgeList.add(new Edge(i, nbr));
@@ -83,7 +83,7 @@ public class Certificate {
     /**
      * For undirected graph, need (src, des) and (des, src) both in adjList.
      */
-    public void solve(ArrayList<Set<Integer>> adjList) {
+    public void solve(ArrayList<HashSet<Integer>> adjList) {
         int M = edgeList.size();
         System.out.println("Number of edge:" + M);
         for (int i = 0; i <= M; i++) {
