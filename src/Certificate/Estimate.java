@@ -8,7 +8,7 @@ import util.Const;
 public class Estimate {
 
     public static void main(String[] args) throws Exception {
-        estimateGraph("sample1");
+        estimateGraph("starClique1");
     }
 
     private static void estimateGraph(String fileName) throws Exception {
@@ -38,8 +38,14 @@ public class Estimate {
             }
         }
 
-//        edges.forEach((k, v) -> {
-//            System.out.printf("Estimation of edge (%d, %d) is %d\n", k.src, k.des, v);
-//        });
+        edges.forEach((k, v) -> {
+            if (k.src == 1 && k.des == 3) {
+                System.out.printf("Estimation of edge (%d, %d) is %d\n", k.src, k.des, v);
+            }
+            if (k.src == 0) {
+                System.out.printf("Estimation of edge (%d, %d) is %d\n", k.src, k.des, v);
+            }
+        });
+
     }
 }

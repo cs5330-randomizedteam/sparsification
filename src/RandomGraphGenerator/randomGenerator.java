@@ -11,7 +11,7 @@ public class randomGenerator {
 
     public static void main(String[] args) throws IOException {
 //        new randomGenerator().generate(1000, 20000, "sample1");
-        new randomGenerator().generateStarClique(5,  1000, "starClique1");
+        new randomGenerator().generateStarClique(10,  1000, "starClique1");
     }
 
     public void printGraph(ArrayList<ArrayList<Integer>> graph) {
