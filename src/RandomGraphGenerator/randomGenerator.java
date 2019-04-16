@@ -11,11 +11,14 @@ import java.util.Scanner;
 public class randomGenerator {
 
     public static void main(String[] args) throws IOException {
-        new randomGenerator().generate(15000, 2000000, "sample1");
-        new randomGenerator().generate(8000, 1000000, "sample2");
-
+        new randomGenerator().generate(1500, 50000, "sample1");
+        new randomGenerator().generate(800, 150000, "sample2");
+        new randomGenerator().generate(200, 10000, "sample3");
+        new randomGenerator().generate(5000, 2000000, "sample4");
 //        new randomGenerator().generateStarClique(20,  5000, "starClique1");
-        new randomGenerator().combineGraph("sample1", "sample2", "combined", 1);
+        new randomGenerator().combineGraph("sample1", "sample2", "combined1", 100);
+        new randomGenerator().combineGraph("sample3", "sample4", "combined2", 50);
+        new randomGenerator().combineGraph("combined1", "combined2", "combined", 500);
     }
 
     public void printGraph(ArrayList<ArrayList<Integer>> graph) {
