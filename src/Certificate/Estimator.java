@@ -14,10 +14,10 @@ public class Estimator {
     }
 
     public static void main(String[] args) throws Exception {
-        new Estimator("combined").estimateGraph();
+        new Estimator("starClique1").estimateGraph();
     }
 
-    private HashMap<String, Integer> estimateGraph() throws Exception {
+    public HashMap<String, Integer> estimateGraph() throws Exception {
         ArrayList<HashSet<Integer>> adjacentList = new ArrayList<>();
         Scanner in = new Scanner(new BufferedReader(new FileReader(Const.OUTPUT_DIR + fileName)));
         int N = in.nextInt();
@@ -47,7 +47,6 @@ public class Estimator {
                 }
             }
         }
-        return edges;
 
 //        int exactMinCutSum = 0;
 //        int estimationSum = 0;
@@ -66,15 +65,15 @@ public class Estimator {
 //        System.out.println("Exact min cut sum is " + exactMinCutSum);
 //        System.out.println("Estimation sum is " + estimationSum);
 
-//        edges.forEach((k, v) -> {
-//            System.out.printf("Estimation of edge (%d, %d) is %d\n", k.src, k.des, v);
-//            if (k.src == 1 && k.des == 3) {
-//                System.out.printf("Estimation of edge (%d, %d) is %d\n", k.src, k.des, v);
-//            }
-//            if (k.src == 0) {
-//                System.out.printf("Estimation of edge (%d, %d) is %d\n", k.src, k.des, v);
-//            }
-//        });
-
+        edges.forEach((k, v) -> {
+//            System.out.printf("Estimation of edge (%s) is %d\n", k, v);
+            if (k.equals("1-3")) {
+                System.out.printf("Estimation of edge (%s) is %d\n", k, v);
+            }
+            if (k.charAt(0) == '0') {
+                System.out.printf("Estimation of edge (%s) is %d\n", k, v);
+            }
+        });
+        return edges;
     }
 }
