@@ -7,10 +7,10 @@ import util.Const;
 
 public class Estimator {
 
-    private String fileName;
+    private String graphFileName;
 
     public Estimator(String fileName) {
-        this.fileName = fileName;
+        this.graphFileName = fileName;
     }
 
     public static void main(String[] args) throws Exception {
@@ -21,7 +21,7 @@ public class Estimator {
 
     public HashMap<String, Integer> estimateGraph() throws Exception {
         ArrayList<HashSet<Integer>> adjacentList = new ArrayList<>();
-        Scanner in = new Scanner(new BufferedReader(new FileReader(Const.OUTPUT_DIR + fileName)));
+        Scanner in = new Scanner(new BufferedReader(new FileReader(Const.OUTPUT_DIR + graphFileName)));
         int N = in.nextInt();
         int nEdges = 0;
         for (int i = 0; i < N; i++) {
