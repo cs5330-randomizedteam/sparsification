@@ -46,10 +46,12 @@ public class NewCertificate {
     public NewCertificate() {}
 
     public Set<Edge> generateCert(int k) throws Exception {
+        int rd = 1;
         while (uf.size() > 1 && edgeList.size() > k * (uf.size() - 1)) {
             System.out.println("number of node: "+uf.size());
             clear();
-            solve(this.adjacentList);
+            solve(this.adjacentList, rd);
+            rd++;
 //            System.out.println("=====Edge List========");
 //            edgeList.forEach(ct -> {
 //                System.out.printf("%d, %d\n", ct.src, ct.des);
@@ -86,7 +88,7 @@ public class NewCertificate {
     /**
      * For undirected graph, need (src, des) and (des, src) both in adjList.
      */
-    public void solve(ArrayList<HashSet<Integer>> adjList) throws Exception {
+    public void solve(ArrayList<HashSet<Integer>> adjList, int round) throws Exception {
         int M = edgeList.size();
         System.out.println("Number of edge:" + M);
         int[] r = new int[adjList.size()];
@@ -117,20 +119,19 @@ public class NewCertificate {
                     E2.remove(cur);
                 }
 
-//                if (r[rooty] + 1 >= E.size()) {
-//                    for (int a = E.size(); a <= r[rooty] + 1; a++) {
-//                        E.add(new ArrayList<>());
-//                    }
-//                }
-//                E.get(r[rooty] + 1).add(new Edge(x, y));
-
                 if (r[x] == r[rooty]) r[x]++;
 //                pq.remove(new Node(rooty, r[rooty]));
-                for (int i = 0; i < adjList.size(); i++) {
-                    if (uf.find(i) == rooty) {
-                        pq.remove(new Node(i, r[i]));
-                        r[i]++;
-                        pq.add(new Node(i, r[i]));
+                if (round == 1) {
+                    pq.remove(new Node(y, r[y]));
+                    r[y]++;
+                    pq.add(new Node(y, r[y]));
+                } else {
+                    for (int i = 0; i < adjList.size(); i++) {
+                        if (uf.find(i) == rooty) {
+                            pq.remove(new Node(i, r[i]));
+                            r[i]++;
+                            pq.add(new Node(i, r[i]));
+                        }
                     }
                 }
 //                pq.add(new Node(rooty, r[rooty]));
@@ -150,12 +151,6 @@ public class NewCertificate {
     }
 
     public Set<Edge> query(int k) throws Exception {
-//        int mink = Math.min(k, E.size() - 1);
-//        TreeSet<Edge> ans = new TreeSet<Edge>();
-//        for (int i = 1; i <= mink; i++) {
-//            ans.addAll(E.get(i));
-//        }
-//        return ans;
         int mink = Math.min(k, maxCount);
         TreeSet<Edge> ans = new TreeSet<Edge>();
         for (int i = 1; i <= mink; i++) {

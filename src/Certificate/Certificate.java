@@ -44,10 +44,12 @@ public class Certificate {
     public Certificate() {}
 
     public Set<Edge> generateCert(int k) {
+        int rd = 1;
         while (uf.size() > 1 && edgeList.size() > k * (uf.size() - 1)) {
             System.out.println("number of node: "+uf.size());
             clear();
-            solve(this.adjacentList);
+            solve(this.adjacentList, rd);
+            rd++;
 //            System.out.println("=====Edge List========");
 //            edgeList.forEach(ct -> {
 //                System.out.printf("%d, %d\n", ct.src, ct.des);
@@ -83,7 +85,7 @@ public class Certificate {
     /**
      * For undirected graph, need (src, des) and (des, src) both in adjList.
      */
-    public void solve(ArrayList<HashSet<Integer>> adjList) {
+    public void solve(ArrayList<HashSet<Integer>> adjList, int round) {
         int M = edgeList.size();
         System.out.println("Number of edge:" + M);
         int[] r = new int[adjList.size()];
@@ -112,16 +114,21 @@ public class Certificate {
                 E.get(r[rooty] + 1).add(new Edge(x, y));
                 if (r[x] == r[rooty]) r[x]++;
 //                pq.remove(new Node(rooty, r[rooty]));
-                for (int i = 0; i < adjList.size(); i++) {
-                    if (uf.find(i) == rooty) {
-                        pq.remove(new Node(i, r[i]));
-                        r[i]++;
-                        pq.add(new Node(i, r[i]));
+                if (round == 1) {
+                    pq.remove(new Node(y, r[y]));
+                    r[y]++;
+                    pq.add(new Node(y, r[y]));
+                } else {
+                    for (int i = 0; i < adjList.size(); i++) {
+                        if (uf.find(i) == rooty) {
+                            pq.remove(new Node(i, r[i]));
+                            r[i]++;
+                            pq.add(new Node(i, r[i]));
+                        }
                     }
                 }
 //                pq.add(new Node(rooty, r[rooty]));
                 visited.put(new Edge(x, y), 1);
-//                visited.put(new Edge(y, x).hashCode(), 1);
             }
         }
     }
