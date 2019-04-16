@@ -14,7 +14,8 @@ public class Estimator {
     }
 
     public static void main(String[] args) throws Exception {
-        new Estimator("starClique1").estimateGraph();
+        Estimator e = new Estimator("starClique1");
+        e.estimateGraph();
     }
 
     public HashMap<String, Integer> estimateGraph() throws Exception {
@@ -75,5 +76,36 @@ public class Estimator {
             }
         });
         return edges;
+    }
+
+    public void saveToFile(String file, HashMap<String, Integer> estimation) throws Exception {
+        String fileName = Const.ESTIMATE_DIR + file;
+        FileOutputStream fos = new FileOutputStream(fileName);
+        ObjectOutputStream oos = new ObjectOutputStream(fos);
+        oos.writeObject(estimation);
+        oos.close();
+        fos.close();
+    }
+
+    public HashMap<String, Integer> readEstmation(String file) throws IOException, ClassNotFoundException {
+        String targetFile = Const.ESTIMATE_DIR + file;
+        try {
+            FileInputStream fis = new FileInputStream(targetFile);
+            ObjectInputStream ois = new ObjectInputStream(fis);
+
+            HashMap<String, Integer> edges = (HashMap<String, Integer>) ois.readObject();
+
+            ois.close();
+            fis.close();
+            return edges;
+        } catch (FileNotFoundException e) {
+            try {
+                HashMap<String, Integer> estimator = estimateGraph();
+                saveToFile(targetFile, estimator);
+                return estimator;
+            } catch (Exception ee) {
+                return null;
+            }
+        }
     }
 }
