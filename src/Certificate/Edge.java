@@ -34,6 +34,6 @@ public class Edge implements Comparable<Edge>, Serializable {
 
     @Override
     public String toString() {
-        return String.format("%d %d", src, des);
+        return String.format("%d-%d", src, des);
     }
 }

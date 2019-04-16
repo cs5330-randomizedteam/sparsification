@@ -3,16 +3,21 @@ package Certificate;
 import java.io.*;
 import java.util.*;
 
-import minCut.MinCutSolver;
 import util.Const;
 
-public class Estimate {
+public class Estimator {
 
-    public static void main(String[] args) throws Exception {
-        estimateGraph("combined");
+    private String fileName;
+
+    public Estimator(String fileName) {
+        this.fileName = fileName;
     }
 
-    private static void estimateGraph(String fileName) throws Exception {
+    public static void main(String[] args) throws Exception {
+        new Estimator("combined").estimateGraph();
+    }
+
+    private HashMap<String, Integer> estimateGraph() throws Exception {
         ArrayList<HashSet<Integer>> adjacentList = new ArrayList<>();
         Scanner in = new Scanner(new BufferedReader(new FileReader(Const.OUTPUT_DIR + fileName)));
         int N = in.nextInt();
@@ -30,18 +35,19 @@ public class Estimate {
         in.close();
         nEdges /= 2;
         System.out.printf("finish loading %d vertices and %d edges\n", N, nEdges);
-        
 
-        HashMap<Edge, Integer> edges = new HashMap<>();
+        HashMap<String, Integer> edges = new HashMap<>();
         for (int i = 2; i <= nEdges; i *= 2) {
             if (edges.size() >= nEdges) break;
             Set<Edge> cert = new Certificate(adjacentList).generateCert(i);
             for (Edge ct: cert) {
-                if (!edges.containsKey(ct)) {
-                    edges.put(ct, i / 2);
+                String str = ct.toString();
+                if (!edges.containsKey(str)) {
+                    edges.put(str, i / 2);
                 }
             }
         }
+        return edges;
 
 //        int exactMinCutSum = 0;
 //        int estimationSum = 0;
