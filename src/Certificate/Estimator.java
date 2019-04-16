@@ -17,7 +17,7 @@ public class Estimator {
         new Estimator("combined").estimateGraph();
     }
 
-    private HashMap<String, Integer> estimateGraph() throws Exception {
+    public HashMap<String, Integer> estimateGraph() throws Exception {
         ArrayList<HashSet<Integer>> adjacentList = new ArrayList<>();
         Scanner in = new Scanner(new BufferedReader(new FileReader(Const.OUTPUT_DIR + fileName)));
         int N = in.nextInt();
