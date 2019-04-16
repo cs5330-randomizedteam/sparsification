@@ -111,7 +111,7 @@ public class NewCertificate {
                 int cur = r[rooty] + 1;
                 maxCount = cur > maxCount ? cur : maxCount;
                 if (!E2.containsKey(cur)) {
-                    E2.put(cur, new ArrayList<>());
+                    E2.put(cur, new ArrayList<>(0));
                 }
                 E2.get(cur).add(new Edge(x, y));
                 if (E2.get(cur).size() >= uf.size() - 1) {

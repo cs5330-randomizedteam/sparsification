@@ -108,7 +108,7 @@ public class Certificate {
 
                 if (r[rooty] + 1 >= E.size()) {
                     for (int a = E.size(); a <= r[rooty] + 1; a++) {
-                        E.add(new ArrayList<>());
+                        E.add(new ArrayList<>(0));
                     }
                 }
                 E.get(r[rooty] + 1).add(new Edge(x, y));
