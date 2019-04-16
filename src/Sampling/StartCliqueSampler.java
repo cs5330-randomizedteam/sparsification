@@ -35,6 +35,9 @@ public class StartCliqueSampler {
         }
 
         for (int i = 0; i < size; i++) {
+            if (i % 1000 == 0) {
+                System.out.println(i);
+            }
             int numNeighbours = in.nextInt();
             double pe = p;
 

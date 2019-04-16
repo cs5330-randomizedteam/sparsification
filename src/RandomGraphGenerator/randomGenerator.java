@@ -2,16 +2,20 @@ package RandomGraphGenerator;
 
 import util.Const;
 
-import java.io.FileOutputStream;
-import java.io.IOException;
+import java.io.*;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.Random;
+import java.util.Scanner;
 
 public class randomGenerator {
 
     public static void main(String[] args) throws IOException {
-//        new randomGenerator().generate(1000, 20000, "sample1");
-        new randomGenerator().generateStarClique(20,  10000, "starClique1");
+        new randomGenerator().generate(15000, 2000000, "sample1");
+        new randomGenerator().generate(8000, 1000000, "sample2");
+
+//        new randomGenerator().generateStarClique(20,  5000, "starClique1");
+        new randomGenerator().combineGraph("sample1", "sample2", "combined", 1);
     }
 
     public void printGraph(ArrayList<ArrayList<Integer>> graph) {
@@ -26,6 +30,8 @@ public class randomGenerator {
 
 
     public void generate(int size, int numEdges, String outputFile) throws IOException {
+        FileOutputStream outputStream = new FileOutputStream(Const.OUTPUT_DIR + outputFile);
+
         ArrayList<ArrayList<Integer>> graph = new ArrayList<>();
         ArrayList<Integer> collected = new ArrayList<>();
         ArrayList<Integer> uncollected = new ArrayList<>();
@@ -109,5 +115,104 @@ public class randomGenerator {
             }
             curNode = cliqueNodeEnd;
         }
+    }
+
+    public void combineGraph(String graphFile1, String graphFile2, String outputFile, int numLinksInBetween) throws IOException {
+        FileOutputStream outputStream = new FileOutputStream(Const.OUTPUT_DIR + outputFile);
+
+        Scanner graph1In = new Scanner(new FileInputStream(new File(Const.OUTPUT_DIR + graphFile1)));
+        Scanner graph2In = new Scanner(new FileInputStream(new File(Const.OUTPUT_DIR + graphFile2)));
+
+        int graph1Size = graph1In.nextInt();
+        int graph2Size = graph2In.nextInt();
+
+
+        outputStream.write(String.valueOf(graph1Size + graph2Size).getBytes());
+
+        HashMap<Integer, ArrayList<Integer>> newEdges = new HashMap<>();
+
+        int count = 0;
+        while (count < numLinksInBetween) {
+            Random rand = new Random();
+            int node1 = rand.nextInt(graph1Size);
+            int node2 = rand.nextInt(graph2Size);
+
+            ArrayList<Integer> node1Neighbours = newEdges.getOrDefault(node1, null);
+            ArrayList<Integer> node2Neighbours = newEdges.getOrDefault(node2 + graph1Size, null);
+
+            if (node1Neighbours != null && node1Neighbours.contains(node2)) {
+                continue;
+            }
+
+            if (node1Neighbours == null && node2Neighbours == null) {
+                node1Neighbours = new ArrayList<>();
+                node2Neighbours = new ArrayList<>();
+                node1Neighbours.add(node2 + graph1Size);
+                node2Neighbours.add(node1);
+                newEdges.put(node1, node1Neighbours);
+                newEdges.put(node2 + graph1Size, node2Neighbours);
+            } else if (node1Neighbours == null) {
+                node1Neighbours = new ArrayList<>();
+                node1Neighbours.add(node2 + graph1Size);
+                node2Neighbours.add(node1);
+                newEdges.put(node1, node1Neighbours);
+            } else if (node2Neighbours == null) {
+                node2Neighbours = new ArrayList<>();
+                node2Neighbours.add(node1);
+                node1Neighbours.add(node2 + graph1Size);
+                newEdges.put(node2 + graph1Size, node2Neighbours);
+            } else {
+                node1Neighbours.add(node2 + graph1Size);
+                node2Neighbours.add(node1);
+            }
+            count++;
+        }
+
+        for (int j = 0; j < graph1Size; j++) {
+            int numNeighbours = graph1In.nextInt();
+
+            ArrayList<Integer> additional = newEdges.getOrDefault(j, null);
+
+            StringBuilder line;
+            if (additional != null) {
+                line = new StringBuilder(" " + (numNeighbours + additional.size()));
+                for (int i = 0; i < additional.size(); i++) {
+                    line.append(" ").append(additional.get(i));
+                }
+            } else {
+                line = new StringBuilder(" " + numNeighbours);
+            }
+
+            for (int k = 0; k < numNeighbours; k++) {
+                line.append(" ").append(graph1In.nextInt());
+            }
+            outputStream.write(line.toString().getBytes());
+        }
+
+        graph1In.close();
+
+        for (int j = graph1Size; j < graph2Size + graph1Size; j++) {
+            int numNeighbours = graph2In.nextInt();
+            ArrayList<Integer> additional = newEdges.getOrDefault(j, null);
+
+            StringBuilder line;
+            if (additional != null) {
+                line = new StringBuilder(" " + (numNeighbours + additional.size()));
+                for (int i = 0; i < additional.size(); i++) {
+                    line.append(" ").append(additional.get(i));
+                }
+            } else {
+                line = new StringBuilder(" " + numNeighbours);
+            }
+
+            for (int k = 0; k < numNeighbours; k++) {
+                line.append(" ").append(graph2In.nextInt() + graph1Size);
+            }
+            outputStream.write(line.toString().getBytes());
+        }
+
+        graph2In.close();
+        outputStream.flush();
+        outputStream.close();
     }
 }

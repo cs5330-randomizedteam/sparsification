@@ -12,7 +12,7 @@ public class MinCutSolver {
 
     public static void main(String[] args) throws IOException {
         MinCutSolver solver = new MinCutSolver("sample", true);
-        System.out.println("Min cut is " + solver.IterativeSolve(11000,  17666));
+        System.out.println("Min cut is " + solver.IterativeSolve(17899,  16879));
     }
 
     private Graph graph;
