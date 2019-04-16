@@ -49,6 +49,7 @@ public class Certificate {
             System.out.println("number of node: "+uf.size());
             clear();
             solve(this.adjacentList, rd);
+            System.out.println("finish solving certificate");
             rd++;
 //            System.out.println("=====Edge List========");
 //            edgeList.forEach(ct -> {

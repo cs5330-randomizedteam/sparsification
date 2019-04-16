@@ -52,6 +52,8 @@ public class NewCertificate {
             clear();
             solve(this.adjacentList, rd);
             rd++;
+            System.out.println("finish solving certificate");
+
 //            System.out.println("=====Edge List========");
 //            edgeList.forEach(ct -> {
 //                System.out.printf("%d, %d\n", ct.src, ct.des);
