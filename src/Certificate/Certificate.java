@@ -48,7 +48,7 @@ public class Certificate {
         while (uf.size() > 1 && edgeList.size() > k * (uf.size() - 1)) {
             System.out.println("number of node: "+uf.size());
             clear();
-            solve(this.adjacentList, rd);
+            solve(rd);
             System.out.println("finish solving certificate");
             rd++;
 //            System.out.println("=====Edge List========");
@@ -86,20 +86,20 @@ public class Certificate {
     /**
      * For undirected graph, need (src, des) and (des, src) both in adjList.
      */
-    public void solve(ArrayList<HashSet<Integer>> adjList, int round) {
+    public void solve(int round) {
         int M = edgeList.size();
         System.out.println("Number of edge:" + M);
-        int[] r = new int[adjList.size()];
+        int[] r = new int[adjacentList.size()];
         HashMap<Edge, Integer> visited = new HashMap<>();
 
         TreeSet<Node> pq = new TreeSet<Node>();
-        for (int i = 0; i < adjList.size(); i++) {
+        for (int i = 0; i < adjacentList.size(); i++) {
             pq.add(new Node(i));
         }
         while (!pq.isEmpty()) {
             Node nodex = pq.pollLast();
             int x = nodex.node;
-            Set<Integer> nbrs = adjList.get(x);
+            Set<Integer> nbrs = adjacentList.get(x);
             for (int y: nbrs) {
                 int rootx = uf.find(x);
                 int rooty = uf.find(y);
@@ -120,7 +120,7 @@ public class Certificate {
                     r[y]++;
                     pq.add(new Node(y, r[y]));
                 } else {
-                    for (int i = 0; i < adjList.size(); i++) {
+                    for (int i = 0; i < adjacentList.size(); i++) {
                         if (uf.find(i) == rooty) {
                             pq.remove(new Node(i, r[i]));
                             r[i]++;

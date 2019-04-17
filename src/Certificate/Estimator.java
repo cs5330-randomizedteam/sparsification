@@ -14,7 +14,7 @@ public class Estimator {
     }
 
     public static void main(String[] args) throws Exception {
-        String inputFile = "sample";
+        String inputFile = "starClique1";
         Estimator e = new Estimator(inputFile);
         e.readEstimation(inputFile);
     }
@@ -67,15 +67,15 @@ public class Estimator {
 //        System.out.println("Exact min cut sum is " + exactMinCutSum);
 //        System.out.println("Estimation sum is " + estimationSum);
 
-        edges.forEach((k, v) -> {
-//            System.out.printf("Estimation of edge (%s) is %d\n", k, v);
-            if (k.equals("1-3")) {
-                System.out.printf("Estimation of edge (%s) is %d\n", k, v);
-            }
-            if (k.charAt(0) == '0') {
-                System.out.printf("Estimation of edge (%s) is %d\n", k, v);
-            }
-        });
+//        edges.forEach((k, v) -> {
+////            System.out.printf("Estimation of edge (%s) is %d\n", k, v);
+//            if (k.equals("1-3")) {
+//                System.out.printf("Estimation of edge (%s) is %d\n", k, v);
+//            }
+//            if (k.charAt(0) == '0') {
+//                System.out.printf("Estimation of edge (%s) is %d\n", k, v);
+//            }
+//        });
         return edges;
     }
 
