@@ -87,6 +87,28 @@ public class randomGenerator {
         outputStream.close();
     }
 
+    public void generateSpecialGraph(int num, int height, String outputFile) throws IOException {
+        FileOutputStream outputStream = new FileOutputStream(Const.OUTPUT_DIR + outputFile);
+        int N = num * (height + 1);
+        outputStream.write(String.valueOf(N).getBytes());
+        for(int i = 0; i < num; i++) {
+            StringBuilder line = new StringBuilder(" " + (2*(height+1)));
+            line.append(String.format(" %d %d", (i+1)%num, (i-1+num)%num));
+            for (int j = i+num; j < N; j += num) {
+                int first = (i == 0 ? j + num - 1 : j - 1);
+                line.append(String.format(" %d %d", first, j));
+            }
+            outputStream.write(line.toString().getBytes());
+        }
+
+        for (int i = num; i < N; i++) {
+            StringBuilder line = new StringBuilder(" 2");
+            line.append(String.format(" %d %d", i%num, (i%num+1)%num));
+            outputStream.write(line.toString().getBytes());
+        }
+        outputStream.close();
+    }
+
 
     public void generateStarClique(int numClique, int cliqueSize, String outputFile) throws IOException {
         FileOutputStream outputStream = new FileOutputStream(Const.OUTPUT_DIR + outputFile);
