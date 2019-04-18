@@ -11,14 +11,34 @@ import java.util.Scanner;
 public class randomGenerator {
 
     public static void main(String[] args) throws IOException {
-        new randomGenerator().generate(1500, 50000, "sample1");
-        new randomGenerator().generate(800, 150000, "sample2");
-        new randomGenerator().generate(200, 10000, "sample3");
-        new randomGenerator().generate(5000, 2000000, "sample4");
-//        new randomGenerator().generateStarClique(20,  5000, "starClique1");
-        new randomGenerator().combineGraph("sample1", "sample2", "combined1", 100);
-        new randomGenerator().combineGraph("sample3", "sample4", "combined2", 50);
-        new randomGenerator().combineGraph("combined1", "combined2", "combined", 500);
+//        new randomGenerator().generate(1500, 800000, "sample1");
+//        new randomGenerator().generate(800, 200000, "sample2");
+//        new randomGenerator().generate(2000, 900000, "sample3");
+//        new randomGenerator().generate(5000, 2500000, "sample4");
+//
+//        new randomGenerator().generate(1500, 700000, "sample5");
+//        new randomGenerator().generate(800, 150000, "sample6");
+//        new randomGenerator().generate(2000, 800000, "sample7");
+//        new randomGenerator().generate(10000, 20000000, "random1");
+//
+        new randomGenerator().generateStarClique(10,  1500, "clique");
+//
+//        new randomGenerator().combineGraph("sample1", "sample2", "combined12", 500);
+//        new randomGenerator().combineGraph("sample3", "sample4", "combined34", 150);
+//        new randomGenerator().combineGraph("combined12", "combined34", "combined1234", 1500);
+//
+//
+//        new randomGenerator().combineGraph("sample5", "sample6", "combined56", 500);
+//        new randomGenerator().combineGraph("sample7", "sample8", "combined78", 150);
+//        new randomGenerator().combineGraph("combined56", "combined78", "combined5678", 1500);
+//
+//        new randomGenerator().combineGraph("combined1234", "combined5678", "combined12345678", 2000);
+//        new randomGenerator().combineGraph("combined12345678", "sample9", "combined", 500);
+
+
+//        new randomGenerator().generateStarClique(10, 1500, "clique");
+
+
     }
 
     public void printGraph(ArrayList<ArrayList<Integer>> graph) {
