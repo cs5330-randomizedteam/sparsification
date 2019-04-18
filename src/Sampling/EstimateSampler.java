@@ -17,8 +17,9 @@ public class EstimateSampler {
         new EstimateSampler().sample("combined");
     }
 
-    public void sample(String inputFile) throws Exception {
-        HashMap<String, Integer> strengthMap = new Estimator(inputFile).estimateGraph();
+    public void sample(String inputFile, double epsilon) throws Exception {
+        HashMap<String, Integer> strengthMap = new Estimator(inputFile).readEstimation(inputFile);
+        System.out.println("finish loading map");
 
         Scanner in = new Scanner(new BufferedReader(new FileReader(Const.OUTPUT_DIR + inputFile)));
         ArrayList<ArrayList<Integer>> adjLst = new ArrayList<>();
@@ -27,7 +28,6 @@ public class EstimateSampler {
         int size = in.nextInt();
 
         int d = 1;
-        double epsilon = 0.3;
         double p = d * Math.log(size) / (epsilon * epsilon);
         double originalSize = 0, sampledSize = 0;
 
@@ -39,13 +39,13 @@ public class EstimateSampler {
 
         for (int i = 0; i < size; i++) {
             int numNeighbours = in.nextInt();
-            double pe = p;
 
             for (int j = 0; j < numNeighbours; j++) {
                 int nextNeighbour = in.nextInt();
                 if (i < nextNeighbour) {
                     String edgeKey = constructEdgeKey(i, nextNeighbour);
-                    pe = Math.min(1, pe / strengthMap.get(edgeKey));
+                    double pe = Math.min(1, p / strengthMap.get(edgeKey));
+                    System.out.println("Sampling probability is "+pe);
 
                     originalSize += 1;
                     if (isSample(pe)) {
@@ -62,7 +62,7 @@ public class EstimateSampler {
 
         System.out.println("Compression rate = " + (sampledSize / originalSize));
 
-        FileOutputStream outputStream = new FileOutputStream(Const.SAMPLED_DIR + "sample");
+        FileOutputStream outputStream = new FileOutputStream(Const.SAMPLED_DIR + inputFile);
         outputStream.write(String.valueOf(size).getBytes());
         for (int i = 0; i < size; i++) {
             ArrayList<Integer> neighbours = adjLst.get(i);
