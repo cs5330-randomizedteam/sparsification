@@ -101,6 +101,7 @@ public class Estimator {
             return edges;
         } catch (FileNotFoundException e) {
             try {
+                System.out.println("ERROR! strength map not found!");
                 HashMap<String, Integer> estimator = estimateGraph();
                 saveToFile(file, estimator);
                 return estimator;
