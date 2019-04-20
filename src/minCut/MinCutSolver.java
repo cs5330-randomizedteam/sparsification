@@ -11,8 +11,8 @@ import java.util.Stack;
 public class MinCutSolver {
 
     public static void main(String[] args) throws IOException {
-        MinCutSolver solver = new MinCutSolver("sample", true);
-        System.out.println("Min cut is " + solver.IterativeSolve(17899,  16879));
+        MinCutSolver solver = new MinCutSolver("clique", true);
+        System.out.println("Min cut is " + solver.IterativeSolve(4,  16));
     }
 
     private Graph graph;
@@ -81,11 +81,8 @@ public class MinCutSolver {
 
     public int IterativeSolve(int source, int dest) {
         this.graph.resetGraph();
-        int total = 0;
         int improvement = findResidualIterative(source, dest, new HashMap<>());
         while (improvement != Integer.MAX_VALUE) {
-            total += improvement;
-            System.out.println("Now is " + total);
             improvement = findResidualIterative(source, dest, new HashMap<>());
         }
 

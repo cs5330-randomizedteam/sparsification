@@ -14,7 +14,7 @@ import java.util.Scanner;
 public class EstimateSampler {
 
     public static void main(String[] args) throws Exception {
-        new EstimateSampler().sample("combined");
+        new EstimateSampler().sample("combined", 0.1);
     }
 
     public void sample(String inputFile, double epsilon) throws Exception {
@@ -45,7 +45,7 @@ public class EstimateSampler {
                 if (i < nextNeighbour) {
                     String edgeKey = constructEdgeKey(i, nextNeighbour);
                     double pe = Math.min(1, p / strengthMap.get(edgeKey));
-                    System.out.println("Sampling probability is "+pe);
+                    //System.out.println("Sampling probability is "+pe);
 
                     originalSize += 1;
                     if (isSample(pe)) {
@@ -60,7 +60,7 @@ public class EstimateSampler {
             }
         }
 
-        System.out.println("Compression rate = " + (sampledSize / originalSize));
+        System.out.println("epsilon =" + epsilon + ", Compression rate = " + (sampledSize / originalSize));
 
         FileOutputStream outputStream = new FileOutputStream(Const.SAMPLED_DIR + inputFile);
         outputStream.write(String.valueOf(size).getBytes());
